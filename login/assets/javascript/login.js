@@ -136,7 +136,8 @@ function processCheckBoxes() {
 	    saveDataFirstTime();
 	    $("#panel2").hide();
 	    $("#status2").text("User Added");
-	    $("#panel3").show();
+	    
+	    callHomePage();
     }
 }
 function saveDataFirstTime() {
