@@ -1,0 +1,47 @@
+
+
+body, html {
+    height: 100%;
+}
+
+body { 
+    background-image: url("assets/img/background.jpg");
+
+    height: 100%; 
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-bottom: 20px;
+}
+
+.company{
+border-style: ridge;
+border-color: black;
+margin:10px;
+background-color: #ffffff;
+vertical-align: middle;
+
+}
+
+.companyRowComp{
+	float: left;
+}
+.stName{
+margin-left: 50px;
+font-size: 40px;
+font:bold;
+
+}
+#userName{
+font-size: 60px;
+font:bold;
+color: green;
+margin-left: 20px;
+
+}
+.main{border: 1px solid black;
+ background-color: white;
+ box-shadow: 10px 5px 5px black; 
+ margin-top: 100px; 
+ visibility: hidden;}

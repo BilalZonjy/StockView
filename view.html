@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<title></title>
+</head>
+
+<body>
+<style type="text/css">
+body, html {
+    height: 100%;
+}
+
+body { 
+    /* The image used */
+    background-image: url("assets/img/background.jpg");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-bottom: 20px;
+}
+
+
+
+
+
+
+  #hourly{
+    margin-left: 50px;
+  }
+.main{
+border: 1px solid black;
+ background-color: white;box-shadow: 10px 5px 5px black; 
+ margin-top: 100px;
+ visibility: hidden;
+}
+#summary{
+font-size: 40px;
+}
+</style>
+<div class="container main" >
+<div class="row">
+  <div class="btn btn-primary btn-info" id="hourly">1H <span class="glyphicon glyphicon-time"></span></div>
+  <div class="btn btn-primary btn-info" id="LastDay">1D <span class="glyphicon glyphicon-time"></span></div>
+  <div class="btn btn-primary btn-info" id="Lastmonth">1M <span class="glyphicon glyphicon-time"></span></div>
+  <div class="btn btn-primary btn-info" id="Lastyear">1Y <span class="glyphicon glyphicon-time"></span></div>
+</div>
+<div class="row">
+ <div class="col-sm-9">
+    <div id="chart_div" ></div>
+    </div>
+  <div class="col-sm-3" style="background-color: white;">
+    <div  style="padding-top: 30%; text-align: center">
+      <div >
+        <div id="summary" ><span id="summary_icon" class="glyphicon glyphicon-arrow-up" style="color: green"></span></div>
+        <div id="summaryTime" > during last hour </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+<script src="http://momentjs.com/downloads/moment-with-locales.js"></script>
+<script src="http://momentjs.com/downloads/moment-timezone-with-data.js"></script>
+<script type="text/javascript">
+
+
+function LastHour(symbol, name) {  
+    $("body").css("cursor", "progress");
+    var quote;
+    // var symbol = 'INX';
+    var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+symbol+"&interval=1min&apikey=7L0FQQQ21X7JAJUX";
+
+    return $.ajax({url: queryURL, method: 'GET'}).done(function(response){
+      console.log(response);
+      var data = response["Time Series (1min)"];
+
+      var trace1 = {
+        x: [],
+        y: [],
+       xaxis: 'x',
+        yaxis: 'y',           
+        mode: 'lines',
+        name:'Price ',
+        line: {
+          color: '#07347c',
+          width: 3
+        }
+      };
+
+      var trace2 = {
+              x: [],
+              y: [],
+              xaxis: 'x2',
+              yaxis: 'y2',
+              name:'volume',
+           
+              fill: 'tonexty',
+              color:'#e57c0b',
+              type: 'scatter',
+              mode: 'none'
+
+            };
+
+      for (i in data){
+        var date = i;
+        var open = parseFloat(data[i]["1. open"]);
+        var high = parseFloat(data[i]["2. high"]);
+        var low = parseFloat(data[i]["3. low"]);
+        var close = parseFloat(data[i]["4. close"]);
+        var volume = parseFloat(data[i]["5. volume"]);
+        trace1.x.push(date);
+        trace1.y.push(close);
+        trace2.y.push(volume);
+        
+
+      }
+    trace1.x = trace1.x.slice(0,60);
+    trace1.y = trace1.y.slice(0,60);
+
+    trace2.x = trace1.x;
+    trace2.y = trace2.y.slice(0,60);
+    var data = [trace2,trace1];
+    var end =  parseFloat(trace1.y[0]);
+    var str =  parseFloat(trace1.y[trace1.y.length-1]);
+    var change = (end - str).toFixed(2);
+    $('#summary').text(change+ ' $');
+    $("#summaryTime").text('since last hour');
+    if (change<0){
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-down">');
+      icon.css('color','red');
+      $('#summary').append(icon);
+      $('#summary').css('color','red');
+      
+    }else{
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-up">');
+      icon.css('color','green');
+      $('#summary').append(icon);
+
+      $('#summary').css('color','green');
+    }
+var layout = {
+   title: 'Stock Price '+name,
+  xaxis2: {anchor: 'y2'},
+  yaxis2: {domain: [0, 0.3],
+            title: 'Volume'},
+  yaxis: {domain: [0.366, 0.9],
+            title: 'Price'},
+  // legend: {traceorder: 'reversed'},
+  xaxis1:{anchor: 'y1',
+          title: 'Time'},
+  xaxis1: {
+    autorange: true,
+    showgrid: false,
+    zeroline: false,
+    showline: false,
+    autotick: true,
+    ticks: '',
+    showticklabels: false
+      }
+    };
+
+    Plotly.purge('chart_div');
+    Plotly.plot('chart_div', data, layout,{staticPlot: true}); 
+    $("body").css("cursor", "default");
+
+});
+
+}
+
+
+$('#chart_div').on('plotly_click', function(){
+    alert('You clicked this Plotly chart!');
+});
+
+function LastDay(symbol, name) {  
+    $("body").css("cursor", "progress");
+    var quote;
+    // var symbol = 'INX';
+    var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+symbol+"&interval=5min&apikey=7L0FQQQ21X7JAJUX";
+
+    $.ajax({url: queryURL, method: 'GET'}).done(function(response){
+      console.log(response);
+      var data = response["Time Series (5min)"];
+      var LastDate = Object.keys(data)[0];
+      LastDate = moment(LastDate,'YYYY-MM-DD HH:mm:ss');
+      var trace1 = {
+        x: [],
+        y: [],
+       xaxis: 'x',
+        yaxis: 'y',           
+        mode: 'lines',
+        name:'Price ',
+        line: {
+          color: '#07347c',
+          width: 3
+        }
+      };
+
+      var trace2 = {
+              x: [],
+              y: [],
+              xaxis: 'x2',
+              yaxis: 'y2',
+              name:'volume',
+           
+              fill: 'tonexty',
+              color:'#e57c0b',
+              type: 'scatter',
+              mode: 'none'
+
+            };
+
+
+
+      // var num = data.length - 60;
+      
+      for (i in data){
+        var date = i; 
+        var PointDate = moment(date,'YYYY-MM-DD HH:mm:ss');
+        if ( PointDate.diff(LastDate, 'days') == 0 ){
+            var open = parseFloat(data[i]["1. open"]);
+            var high = parseFloat(data[i]["2. high"]);
+            var low = parseFloat(data[i]["3. low"]);
+            var close = parseFloat(data[i]["4. close"]);
+            var volume = parseFloat(data[i]["5. volume"]);
+            trace1.x.push(date);
+            trace1.y.push(close);
+            trace2.y.push(volume);
+        }
+      }
+
+
+
+    trace2.x = trace1.x;
+    var data = [trace2,trace1];
+
+    var end =  parseFloat(trace1.y[0]);
+    var str =  parseFloat(trace1.y[trace1.y.length-1]);
+    var change = (end - str).toFixed(2);
+    $('#summary').text(change+ ' $');
+    $("#summaryTime").text('since last day');
+    if (change<0){
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-down">');
+      icon.css('color','red');
+      $('#summary').append(icon);
+      $('#summary').css('color','red');
+      
+    }else{
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-up">');
+      icon.css('color','green');
+      $('#summary').append(icon);
+
+      $('#summary').css('color','green');
+    }
+
+var layout = {
+   title: 'Stock Price '+name,
+  xaxis2: {anchor: 'y2',
+            title: 'Time'},
+  yaxis2: {domain: [0, 0.3],
+            title: 'Volume',},
+  yaxis: {domain: [0.366, 0.9],
+    title: 'Price'},
+  // legend: {traceorder: 'reversed'},
+  xaxis1:{anchor: 'y1'},
+  xaxis1: {
+    
+    autorange: true,
+    showgrid: false,
+    zeroline: false,
+    showline: false,
+    autotick: true,
+    ticks: '',
+    showticklabels: false
+  }
+};
+
+
+    Plotly.purge('chart_div');
+    Plotly.plot('chart_div', data, layout,{staticPlot: true}); 
+    $("body").css("cursor", "default");
+    });
+}
+
+
+function LastMonth(symbol, name) {  
+    $("body").css("cursor", "progress");
+    var quote;
+    var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol="+symbol+"&outputsize=compact&apikey=7L0FQQQ21X7JAJUX"
+
+    $.ajax({url: queryURL, method: 'GET'}).done(function(response){
+      console.log(response);
+      var data = response["Time Series (Daily)"];
+      var LastDate = Object.keys(data)[0];
+      LastDate = moment(LastDate,'YYYY-MM-DD HH:mm:ss');
+
+      trace = {
+            x: [], 
+            close: [], 
+            high:[],  
+            low: [],
+            open: [],
+
+            // cutomise colors 
+            increasing: {line: {color: 'green'}},
+            decreasing: {line: {color: 'red'}},
+            
+            type: 'ohlc', 
+            xaxis: 'x', 
+            yaxis: 'y'
+          };
+      
+
+
+      for (i in data){
+        var date = i; 
+        var PointDate = moment(date,'YYYY-MM-DD HH:mm:ss');
+        if ( PointDate.diff(LastDate, 'days') >-31 ){
+        var date = i;
+        var open = parseFloat(data[i]["1. open"]);
+        var high = parseFloat(data[i]["2. high"]);
+        var low = parseFloat(data[i]["3. low"]);
+        var close = parseFloat(data[i]["4. close"]);
+
+        trace.x.push(date);
+        trace.open.push(open);
+        trace.high.push(high);
+        trace.low.push(low);
+        trace.close.push(close);
+        }
+      }
+
+
+    var end =  parseFloat(trace.close[0]);
+    var str =  parseFloat(trace.close[trace.close.length-1]);
+    var change = (end - str).toFixed(2);
+    $('#summary').text(change+ ' $');
+    $("#summaryTime").text('since last month');
+    if (change<0){
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-down">');
+      icon.css('color','red');
+      $('#summary').append(icon);
+      $('#summary').css('color','red');
+      
+    }else{
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-up">');
+      icon.css('color','green');
+      $('#summary').append(icon);
+
+      $('#summary').css('color','green');
+    }
+
+
+    var data = [trace];
+    var layout = {
+      title: 'Stock Price '+name,
+      dragmode: 'zoom', 
+      showlegend: false, 
+      xaxis: {
+        autorange: true, 
+        title: 'Date'
+      }, 
+      yaxis: {
+        autorange: true,
+        title: 'Price' 
+      }
+    };
+    Plotly.purge('chart_div');
+    Plotly.plot('chart_div', data, layout,{staticPlot: true}); 
+    $("body").css("cursor", "default");
+    });
+}
+
+
+function LastYear(symbol, name) {  
+    $("body").css("cursor", "progress");
+    var quote;
+    var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+symbol+"&outputsize=compact&apikey=7L0FQQQ21X7JAJUX"
+
+    $.ajax({url: queryURL, method: 'GET'}).done(function(response){
+      console.log(response);
+      var data = response["Weekly Time Series"];
+      var LastDate = Object.keys(data)[0];
+      LastDate = moment(LastDate,'YYYY-MM-DD HH:mm:ss');
+
+      trace = {
+            x: [], 
+            close: [], 
+            high:[],  
+            low: [],
+            open: [],
+
+            // cutomise colors 
+            increasing: {line: {color: 'green'}},
+            decreasing: {line: {color: 'red'}},
+            
+            type: 'ohlc', 
+            xaxis: 'x', 
+            yaxis: 'y'
+          };
+      
+
+
+      for (i in data){
+        var date = i; 
+        var PointDate = moment(date,'YYYY-MM-DD HH:mm:ss');
+        if ( PointDate.diff(LastDate, 'months') >-13 ){
+        var date = i;
+        var open = parseFloat(data[i]["1. open"]);
+        var high = parseFloat(data[i]["2. high"]);
+        var low = parseFloat(data[i]["3. low"]);
+        var close = parseFloat(data[i]["4. close"]);
+
+        trace.x.push(date);
+        trace.open.push(open);
+        trace.high.push(high);
+        trace.low.push(low);
+        trace.close.push(close);
+        }
+      }
+
+    var data = [trace];
+    var end =  parseFloat(trace.close[0]);
+    var str =  parseFloat(trace.close[trace.close.length-1]);
+    var change = (end - str).toFixed(2);
+    $('#summary').text(change+ ' $');
+    $("#summaryTime").text('since last year');
+    if (change<0){
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-down">');
+      icon.css('color','red');
+      $('#summary').append(icon);
+      $('#summary').css('color','red');
+      
+    }else{
+
+      var icon = $('<div class="glyphicon glyphicon-arrow-up">');
+      icon.css('color','green');
+      $('#summary').append(icon);
+
+      $('#summary').css('color','green');
+    }
+
+
+
+
+    var layout = {
+      title: 'Stock Price '+name,
+      dragmode: 'zoom', 
+      showlegend: false, 
+      xaxis: {
+        autorange: true, 
+        title: 'Date'
+      }, 
+      yaxis: {
+        autorange: true,
+        title: 'Price' 
+      }
+    };
+    Plotly.purge('chart_div');
+    Plotly.plot('chart_div', data, layout,{staticPlot: true}); 
+    $("body").css("cursor", "default");
+    });
+}
+$("body").css("cursor", "progress");
+var id = localStorage.getItem("symbol");
+localStorage.removeItem("symbol");
+var stockName = localStorage.getItem("Name");
+localStorage.removeItem("Name");
+if (id == null) {
+
+   window.open ('home.html','_self',false);
+}
+
+
+$('#hourly').addClass('active');
+
+function successCallback(){
+
+    $('.main').css('visibility','visible');
+}
+function failureCallback(){
+  alert('lost connecton');
+  window.open ('home.html','_self',false);
+
+}
+
+let promise = LastHour(id, stockName).then(successCallback, failureCallback);
+
+$('#hourly').on("click", function(event) {
+  $('.active').removeClass('active');
+  $(this).addClass('active');
+  LastHour(id, stockName);
+});
+
+
+$('#LastDay').on("click", function(event) {
+
+$('.active').removeClass('active');
+$(this).addClass('active');
+LastDay(id, stockName);
+});
+
+$('#Lastmonth').on("click", function(event) {
+$('.active').removeClass('active');
+$(this).addClass('active');
+LastMonth(id, stockName);
+});
+
+$('#Lastyear').on("click", function(event) {
+$('.active').removeClass('active');
+$(this).addClass('active');
+LastYear(id, stockName);
+});
+</script>
+</body>
+</html>
+
+

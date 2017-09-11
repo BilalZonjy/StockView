@@ -61,14 +61,9 @@ function process() {
 		} else {
 			saveWorkingOn = new User(existingUsers[index],existingPasswords[index]);
 			saveWorkingOn.stocks = existingStocks[index];
-			// localStorage.setItem("stocks",saveWorkingOn.stocks);
 			
 			callHomePage();
-			// console.log(saveWorkingOn.stocks);
-			// // alert(userName);			
-			// console.log(userName);
-			// $("#panel1").hide();
-			// $("#panel3").show();
+
 
 		}
 	}
@@ -95,24 +90,17 @@ function getUsers() {
 	existingStocks = [];
 	rootRef.on('value',function(snap) {
 		var pk = snap.val();
-		// existingUsers = [];
-		// existingPasswords = [];
-		// existingStocks = [];
+
 		for(i in pk){
 			existingUsers.push(pk[i]['username']);
 			existingPasswords.push(pk[i]['password']);
 			existingStocks.push(pk[i]['stocks']);
 		}
-			// console.log(saveWorkingOn.stocks);
-			// // alert(userName);
-			// console.log(userName);
+
 
 
 	});
 callHomePage();
-// console.log(saveWorkingOn.stocks);
-// // alert(userName);			
-// console.log(userName);
 
 }
 function checkForExistence(uname){
@@ -161,11 +149,7 @@ function saveDataFirstTime() {
 	});
 }
 function action() {
-	// localStorage.setItem("stocks",saveWorkingOn.stocks);
-	console.log(saveWorkingOn.stocks);
-	// alert(userName);
-	console.log(userName);	
-	// location.href = "choose.html";
+
 }
 function changePassword() {
 	console.log("in changrPassword");
@@ -175,15 +159,10 @@ function processRadio() {
 	  var exchange    = "";
 	  var symbol      ="";
 	  var array = [];
-	  console.log("in processRadio");
 	  xoxo = localStorage.getItem("stocks");
-	  console.log("in processRadio stocks are " + xoxo);
       var toto =	$('input[type="radio"]:checked').val();
-	  console.log("toto = " + toto);
 	  array = toto.split(":");
-	  console.log("array = " + array);
 	  symbol = array[1];
-	  console.log("symbol = " + symbol);
 	  exchange = array[0];
 	  companyName = array[2];
 	}
@@ -200,9 +179,15 @@ function initialize2(){
 }
 }
 function callHomePage(){
-console.log(saveWorkingOn.stocks);
-// alert(userName);			
-console.log(userName);
 
-	
+try {
+
+localStorage.removeItem('firebase:host:bob-sproject.firebaseio.com');
+localStorage.setItem("stocksList",saveWorkingOn.stocks);
+localStorage.setItem("userName",userName);
+window.open ('../Home/home.html','_self',false);
+}catch(err){
+
+}
+
 }
