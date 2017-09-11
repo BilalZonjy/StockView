@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>  
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/login.css">
+	<title>StockView Login</title>
+</head>
+<body onload="initialize()">
+
+	<div class="container">
+		<div class="jumbotron text-center">
+			<h1 id="title">Stock View Login</h1>
+
+		</div>
+	<div class="panel panel-primary" id="panel1">
+	  <div class="panel-heading">Login</div>
+	  <div class="panel-body">
+
+	  <div class="form-group" id="form-group-1">
+	  <form id="form1" action="javascript:process()">
+	    <label>username:</label><br>
+	    <input id="user-name-input"></input><br>
+	    <label>password:</label><br>
+	    <input id="password-input" type="password"></input><br>
+	  </div>
+	  <div>
+	      <input type="radio" name="joke" class ="radio1" id="radio1" value="login" /> Login
+          <input type="radio" name="joke" class="radio1" id="radio2" value="create" /> Create Account
+       </div>   
+      <p id="status"><strong></strong></p>
+	  <button class="btn btn-primary" id="login">submit</button>
+	  </form>
+	 </div>
+	 </div> 
+	 <div class="panel panel-primary" id="panel2">
+	  <div class="panel-heading">Choose Portfolio</div>
+	  <div class="panel-body">
+
+	  <div class="form-group" id="form-group-2">
+	  <form id="form2" action="javascript:processCheckBoxes()">
+	  </div>
+	     <p id="instructions">  </p><br>
+	     <p id="status1"><strong></strong></p>
+	     <input type="checkbox" class="cb" id="checksymbol1" name="1" value="NASDAQ:AAPL:Apple">Apple<img src="assets/images/APPLE.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol2" name="2" value="NYSE:AXP:American Express"> American Express<img src="assets/images/amex.jpeg" style="width:30px;height:30px"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol3" name="3" value="NYSE:BA:Bo:Boeing"> Boeing<img src="assets/images/boeing.jpeg" style="width:30px;height:25px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol4" name="4" value="NYSE:CAT:Catepillar"> Caterpillar<img src="assets/images/cat.jpeg" style="width:30px;height:25px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol5" name="5" value="NASDAQ:CSCO:Cisco Systems"> Cisco Systems<img src="assets/images/cisco.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol6" name="6" value="NYSE:CVX:Chevron"> Chrevon<img src="assets/images/chevron.jpeg" style="width:50px;height:30px";><br><br>
+         <input type="checkbox" class="cb" id="checksymbol7" name="7" value="NYSE:KO:Coca-Cola"> Coca-Cola<img src="assets/images/coca-cola.jpeg" style="width:30px;heigth:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol8" name="8" value="NYSE:DD:DuPont"> DuPont<img src="assets/images/dupont.jpeg" style="width:40px;height:40px"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol9" name="9" value="NYSE:XOM:ExxonMobil"> ExxonMobil<img src="assets/images/exxon.jpeg" style="width:60px;height:60px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol10" name="10" value="NYSE:GE:General Electric"> General Electric<img src="assets/images/GE.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol11" name="11" value="NYSE:GS:Goldman Sachs"> Goldman Sachs<img src="assets/images/sachs.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol12" name="12" value="NYSE:HD:Home Depot"> Home Depot<img src="assets/images/depot.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol13" name="13" value="NYSE:IBM:IBM"> IBM<img src="assets/images/ibm.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol14" name="14" value="NASDAQ:INTC:Intel"> Intel<img src="assets/images/intel.png" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol15" name="15" value="NYSE:JNJ:Johnson and Johnson"> Johnson and Johnson<img src="assets/images/jj.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol16" name="16" value="NYSE:JPM:JPMorgan Chase"> JPMorgan Chase<img src="assets/images/jp.jpeg" style="width:80px;height:80px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol17" name="17" value="NYSE:MCD:McDonald's"> McDonald's <img src="assets/images/donalds.jpeg" style="width:70px;height:60px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol18" name="18" value="NYSE:MMM:3M Company"> 3M Company<img src="assets/images/3m.jpeg" style="width:30px;height:30px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol19" name="19" value="NYSE:MRK:Merck"> Merck<img src="assets/images/merck.jpeg" style="width:40px;height:40px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol20" name="20" value="NASDAQ:MSFT:Microsoft"> Microsoft<img src="assets/images/microsoft.jpeg" style="width:40px;height:40px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol21" name="21" value="NYSE:NKE:Nike"> Nike<img src="assets/images/nike.jpeg" style="width:40px;height:40px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol22" name="22" value="NYSE:PFE:Pfizer"> Pfizer<img src="assets/images/pfizer.jpeg" style="width:50px;height:50px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol23" name="23" value="NYSE:PG:Proctor and Gamble"> Proctor and Gamble<img src="assets/images/pg.jpeg" style="width:90px;height:90px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol24" name="24" value="NYSE:TRV:The Travallers"> The Travellers<img src="assets/images/travellers.jpeg" style="width:70px;height:70px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol25" name="25" value="NYSE:UNH:UnitedHealth"> UnitedHealth<img src="assets/images/uh.jpeg" style="width:150px;height:150px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol26" name="26" value="NYSE:UTX:United Technologies"> United Technologies<img src="assets/images/united.jpeg" style="width:50px;height:50px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol27" name="27" value="NYSE:V:Visa"> Visa<img src="assets/images/visa.jpeg" style="width:70px;height:50px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol28" name="28" value="NYSE:VZ:Verizon"> Verizon<img src="assets/images/verizon.jpeg" style="width:70px;height:50px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol29" name="29" value="NYSE:WMT:Walmart"> Walmart<img src="assets/images/walmart.jpeg" style="width:80px;height:80px;"><br><br>
+         <input type="checkbox" class="cb" id="checksymbol30" name="30" value="NYSE:DIS:Walt Disney"> Walt Disney<img src="assets/images/walt.jpeg" style="width:50px;height:50px;"><br><br>
+	  <button class="btn btn-primary" id="createportfolio">submit</button>
+	  </form>
+	 </div>
+	 </div> 
+	 <div>
+	  <div class="panel panel-primary" id="panel3">
+	  <div class="panel-heading">Choose Action</div>
+	  <div class="panel-body"> 
+	   <p id="status2"</p>
+	   <div class="form-group" id="form-group-2">
+	  <form id="form1" action="javascript:action()">
+	  <button> Examine performance </button>
+	  </form>
+	  </div>
+	  </div>
+	  </div> 
+	<script type="text/javascript" src="assets/javascript/login.js"></script>
+	<!-- <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script> -->
+	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>

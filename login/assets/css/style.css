@@ -1,0 +1,39 @@
+.container {
+  background-image: url(../images/image3.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  /* position: fixed; */
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
+
+
+
+.jumbotron {
+  font-size: 100px;
+}
+
+.company-button {
+
+}
+
+.company {
+  margin: 10px;
+}
+
+.company-logo {
+	height: 150px;
+	width: 150px;
+}
+
+#stock-menu {
+  padding-top: -5px;
+
+  margin-top: 40px;
+
+}
+

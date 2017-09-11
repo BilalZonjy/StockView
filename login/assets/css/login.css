@@ -1,0 +1,21 @@
+
+#title {
+	background-color: blue;
+	color: white;
+}
+.jumbotron {
+	background-color: blue;
+}
+
+.container {
+  background-image: url(../images/image3.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  /* position: fixed; */
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
