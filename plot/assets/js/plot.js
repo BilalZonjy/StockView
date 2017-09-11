@@ -1,81 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-      <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-	<title></title>
-</head>
-
-<body>
-<style type="text/css">
-body, html {
-    height: 100%;
-}
-
-body { 
-    /* The image used */
-    background-image: url("assets/img/background.jpg");
-
-    /* Full height */
-    height: 100%; 
-
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-bottom: 20px;
-}
-
-
-
-
-
-
-  #hourly{
-    margin-left: 50px;
-  }
-.main{
-border: 1px solid black;
- background-color: white;box-shadow: 10px 5px 5px black; 
- margin-top: 100px;
- visibility: hidden;
-}
-#summary{
-font-size: 40px;
-}
-</style>
-<div class="container main" >
-<div class="row">
-  <div class="btn btn-primary btn-info" id="hourly">1H <span class="glyphicon glyphicon-time"></span></div>
-  <div class="btn btn-primary btn-info" id="LastDay">1D <span class="glyphicon glyphicon-time"></span></div>
-  <div class="btn btn-primary btn-info" id="Lastmonth">1M <span class="glyphicon glyphicon-time"></span></div>
-  <div class="btn btn-primary btn-info" id="Lastyear">1Y <span class="glyphicon glyphicon-time"></span></div>
-</div>
-<div class="row">
- <div class="col-sm-9">
-    <div id="chart_div" ></div>
-    </div>
-  <div class="col-sm-3" style="background-color: white;">
-    <div  style="padding-top: 30%; text-align: center">
-      <div >
-        <div id="summary" ><span id="summary_icon" class="glyphicon glyphicon-arrow-up" style="color: green"></span></div>
-        <div id="summaryTime" > during last hour </div>
-        </div>
-    </div>
-  </div>
-</div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-<script src="http://momentjs.com/downloads/moment-with-locales.js"></script>
-<script src="http://momentjs.com/downloads/moment-timezone-with-data.js"></script>
-<script type="text/javascript">
-
 
 function LastHour(symbol, name) {  
     $("body").css("cursor", "progress");
@@ -84,7 +6,6 @@ function LastHour(symbol, name) {
     var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+symbol+"&interval=1min&apikey=7L0FQQQ21X7JAJUX";
 
     return $.ajax({url: queryURL, method: 'GET'}).done(function(response){
-      console.log(response);
       var data = response["Time Series (1min)"];
 
       var trace1 = {
@@ -194,7 +115,6 @@ function LastDay(symbol, name) {
     var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+symbol+"&interval=5min&apikey=7L0FQQQ21X7JAJUX";
 
     $.ajax({url: queryURL, method: 'GET'}).done(function(response){
-      console.log(response);
       var data = response["Time Series (5min)"];
       var LastDate = Object.keys(data)[0];
       LastDate = moment(LastDate,'YYYY-MM-DD HH:mm:ss');
@@ -306,7 +226,6 @@ function LastMonth(symbol, name) {
     var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol="+symbol+"&outputsize=compact&apikey=7L0FQQQ21X7JAJUX"
 
     $.ajax({url: queryURL, method: 'GET'}).done(function(response){
-      console.log(response);
       var data = response["Time Series (Daily)"];
       var LastDate = Object.keys(data)[0];
       LastDate = moment(LastDate,'YYYY-MM-DD HH:mm:ss');
@@ -397,7 +316,6 @@ function LastYear(symbol, name) {
     var queryURL =  "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol="+symbol+"&outputsize=compact&apikey=7L0FQQQ21X7JAJUX"
 
     $.ajax({url: queryURL, method: 'GET'}).done(function(response){
-      console.log(response);
       var data = response["Weekly Time Series"];
       var LastDate = Object.keys(data)[0];
       LastDate = moment(LastDate,'YYYY-MM-DD HH:mm:ss');
@@ -481,58 +399,3 @@ function LastYear(symbol, name) {
     $("body").css("cursor", "default");
     });
 }
-$("body").css("cursor", "progress");
-var id = localStorage.getItem("symbol");
-localStorage.removeItem("symbol");
-var stockName = localStorage.getItem("Name");
-localStorage.removeItem("Name");
-if (id == null) {
-
-   window.open ('home.html','_self',false);
-}
-
-
-$('#hourly').addClass('active');
-
-function successCallback(){
-
-    $('.main').css('visibility','visible');
-}
-function failureCallback(){
-  alert('lost connecton');
-  window.open ('home.html','_self',false);
-
-}
-
-let promise = LastHour(id, stockName).then(successCallback, failureCallback);
-
-$('#hourly').on("click", function(event) {
-  $('.active').removeClass('active');
-  $(this).addClass('active');
-  LastHour(id, stockName);
-});
-
-
-$('#LastDay').on("click", function(event) {
-
-$('.active').removeClass('active');
-$(this).addClass('active');
-LastDay(id, stockName);
-});
-
-$('#Lastmonth').on("click", function(event) {
-$('.active').removeClass('active');
-$(this).addClass('active');
-LastMonth(id, stockName);
-});
-
-$('#Lastyear').on("click", function(event) {
-$('.active').removeClass('active');
-$(this).addClass('active');
-LastYear(id, stockName);
-});
-</script>
-</body>
-</html>
-
-

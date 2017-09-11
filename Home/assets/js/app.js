@@ -5,7 +5,7 @@ $(document).ready(function(){
 	localStorage.removeItem("userName");
 	var st = localStorage.getItem("stocksList");
 	localStorage.removeItem("stocksList");
-	if (st == null) {
+	if (st == null || st.length == 0) {
    		window.open ('../login/index.html','_self',false);
 		}
 
@@ -41,12 +41,15 @@ $(document).ready(function(){
 
 
 	$('.main').css('visibility','visible');
-	}) 	
+		
 
 
 
 $(document).on("click", ".company", function(){
-      localStorage.setItem("symbol",this.getAttribute('data-symbol'));
-      localStorage.setItem("Name",this.getAttribute('data-Name'));
-      window.open ('view.html','_self',false);
+		localStorage.setItem("symbol",this.getAttribute('data-symbol'));
+		localStorage.setItem("Name",this.getAttribute('data-Name'));
+		localStorage.setItem("userName",name);
+		localStorage.setItem("stocksList",st);     
+		window.open ('../plot/plot.html','_self',false);
 });
+}); 

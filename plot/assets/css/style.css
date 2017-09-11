@@ -1,0 +1,35 @@
+body, html {
+    height: 100%;
+}
+
+body { 
+
+    height: 100%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-bottom: 20px;
+}
+
+
+
+
+
+
+  #hourly{
+    margin-left: 50px;
+  }
+.main{
+border: 1px solid black;
+ background-color: white;box-shadow: 10px 5px 5px black; 
+ margin-top: 100px;
+ visibility: hidden;
+}
+#summary{
+font-size: 40px;
+}
+#backToPortfolio{
+
+	margin-left: 50px;
+	margin-bottom: 20px;
+}
