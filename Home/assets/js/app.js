@@ -1,6 +1,6 @@
 $(document).ready(function(){ 
 
-
+	try{
 	var name = localStorage.getItem("userName");
 	localStorage.removeItem("userName");
 	var st = localStorage.getItem("stocksList");
@@ -42,7 +42,11 @@ $(document).ready(function(){
 
 	$('.main').css('visibility','visible');
 		
+}
+catch(err) {
+window.open ('../login/index.html','_self',false);
 
+}
 
 
 $(document).on("click", ".company", function(){
